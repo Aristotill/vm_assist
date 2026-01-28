@@ -24,6 +24,10 @@ System summary:
 Explain the result in simple terms.
 Suggest safe next steps if applicable.
 Do NOT execute anything.
+If the system is READY, suggest a Fedora command to install QEMU/KVM.
+Prefix the command with:
+COMMAND:
+
 """
 
 
