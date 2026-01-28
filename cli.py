@@ -6,13 +6,13 @@ Usage:
   python cli.py
   python cli.py --ai
 """
-from ai.openai_provider import OpenAIProvider
+
 import sys
 from inspector.cpu import get_cpu_info
 from inspector.ram import get_ram_info
 from inspector.disk import get_disk_info
 from rules.readiness import evaluate_readiness
-
+from ai.openai_provider import OpenAIProvider
 from ai.provider import DummyProvider
 from ai.advisor import get_ai_advice
 
