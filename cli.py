@@ -19,6 +19,8 @@ from rules.readiness import evaluate_readiness
 from ai.openai_provider import OpenAIProvider
 from ai.provider import DummyProvider
 from ai.advisor import get_ai_advice
+from inspector.os import get_os_info
+
 
 
 def main():
@@ -29,6 +31,7 @@ def main():
     cpu_info = get_cpu_info()
     ram_info = get_ram_info()
     disk_info = get_disk_info()
+    os_info = get_os_info()
 
     readiness = evaluate_readiness(cpu_info, ram_info, disk_info)
 
@@ -83,7 +86,8 @@ def main():
             "status": readiness["status"],
             "reasons": readiness["reasons"],
         }
-
+        summary["os_id"] = os_info["id"]
+        summary["os_name"] = os_info["name"]
         try:
             provider = OpenAIProvider()
             print("(Using real BYO-AI provider)\n")
