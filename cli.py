@@ -8,6 +8,8 @@ Usage:
 """
 
 import sys
+from ai.plan_parser import parse_plan
+from ai.advisor import get_vm_assist_plan
 from actions.executor import ask_and_execute
 from ai.advisor import extract_command_from_ai
 from inspector.cpu import get_cpu_info
@@ -45,8 +47,33 @@ def main():
         print(f" - {reason}")
 
     if use_ai:
-        print("\nAI Advisor")
-        print("----------")
+    print("\nAI Advisor")
+    print("----------")
+
+    plan_text = get_vm_assist_plan(provider, summary)
+
+    print("\nPROPOSED PLAN")
+    print("-------------")
+    print(plan_text)
+
+    steps = parse_plan(plan_text)
+
+    mode = input("\nAutomate this plan? (YES/no): ").strip()
+    automate = (mode == "YES")
+
+    for i, step in enumerate(steps, start=1):
+        print(f"\nSTEP {i}: {step.get('title', '')}")
+        print(f"Reason: {step.get('reason', '')}")
+        print(f"Command:\n{step.get('command', '')}")
+
+        choice = input("Execute this step? (YES/no): ").strip()
+        if choice == "YES":
+            ask_and_execute(step["command"])
+        else:
+            print("Skipped.")
+            if automate:
+                print("Automation stopped by user.")
+                break
 
         summary = {
             "cpu_vendor": cpu_info["vendor"],
