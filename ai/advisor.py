@@ -30,3 +30,12 @@ Do NOT execute anything.
 def get_ai_advice(provider: AIProvider, summary: dict) -> str:
     prompt = build_prompt(summary)
     return provider.ask(prompt)
+def extract_command_from_ai(text: str) -> str | None:
+    """
+    Very simple command extraction.
+    Looks for lines starting with: COMMAND:
+    """
+    for line in text.splitlines():
+        if line.startswith("COMMAND:"):
+            return line.replace("COMMAND:", "").strip()
+    return None
