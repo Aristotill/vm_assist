@@ -76,6 +76,10 @@ For the final step, use QEMU with:
 - a read-only base image
 - a temporary overlay disk
 - delete the overlay on exit
+For the final step, use a QEMU command that:
+- Creates a temporary qcow2 overlay using mktemp
+- Uses a read-only base image at images/debian-base.qcow2
+- Deletes the overlay after the VM exits
 """
 def get_vm_assist_plan(provider, summary: dict) -> str:
     prompt = build_vm_assist_prompt(summary)
