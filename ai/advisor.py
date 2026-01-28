@@ -43,3 +43,40 @@ def extract_command_from_ai(text: str) -> str | None:
         if line.startswith("COMMAND:"):
             return line.replace("COMMAND:", "").strip()
     return None
+def build_vm_assist_prompt(summary: dict) -> str:
+    return f"""
+You are a Linux virtualization assistant for Fedora.
+
+System summary:
+- CPU vendor: {summary['cpu_vendor']}
+- Virtualization supported: {summary['virt']}
+- Total RAM (GB): {summary['ram_gb']}
+- Free disk (GB): {summary['disk_free_gb']}
+- Readiness status: {summary['status']}
+
+Return a structured plan in EXACT format below.
+Include a final step that launches a DISPOSABLE browsing VM using QEMU/KVM
+with a temporary overlay disk that is deleted on VM exit.
+
+FORMAT (do not deviate):
+
+PLAN:
+STEP 1:
+TITLE: <short title>
+REASON: <why this is needed>
+COMMAND: <shell command>
+
+STEP 2:
+TITLE: ...
+REASON: ...
+COMMAND: ...
+
+Use Fedora commands.
+For the final step, use QEMU with:
+- a read-only base image
+- a temporary overlay disk
+- delete the overlay on exit
+"""
+def get_vm_assist_plan(provider, summary: dict) -> str:
+    prompt = build_vm_assist_prompt(summary)
+    return provider.ask(prompt)
