@@ -55,9 +55,15 @@ def main():
             "reasons": readiness["reasons"],
         }
 
-        provider = DummyProvider()
-        advice = get_ai_advice(provider, summary)
-        print(advice)
+      try:
+    provider = OpenAIProvider()
+    print("(Using real BYO-AI provider)\n")
+except Exception as e:
+    provider = DummyProvider()
+    print(f"(Falling back to dummy AI: {e})\n")
+
+advice = get_ai_advice(provider, summary)
+print(advice)
 
 
 if __name__ == "__main__":
