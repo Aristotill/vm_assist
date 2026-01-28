@@ -8,6 +8,8 @@ Usage:
 """
 
 import sys
+from actions.executor import ask_and_execute
+from ai.advisor import extract_command_from_ai
 from inspector.cpu import get_cpu_info
 from inspector.ram import get_ram_info
 from inspector.disk import get_disk_info
@@ -64,6 +66,10 @@ def main():
 
         advice = get_ai_advice(provider, summary)
         print(advice)
+
+        command = extract_command_from_ai(advice)
+        if command:
+          ask_and_execute(command)
 
 
 
