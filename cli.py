@@ -6,7 +6,7 @@ Usage:
   python cli.py
   python cli.py --ai
 """
-
+from ai.openai_provider import OpenAIProvider
 import sys
 from inspector.cpu import get_cpu_info
 from inspector.ram import get_ram_info
